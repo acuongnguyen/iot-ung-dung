@@ -1,0 +1,206 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #fefafa;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.widgets--widget-label {
+  line-height: normal;
+}
+.container {
+  width: 100%;
+  height: 710px;
+  position: relative;
+}
+/*header*/
+#header {
+  width: 98.6%;
+  height: 7%;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  padding-left: 20px;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+#menu-icon::before {
+  content: "\2261";
+  font-size: 24px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.menu-item {
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+  padding: 10px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.menu-item:hover {
+  background-color: #f0f0f0;
+}
+
+.menu-item.active {
+  font-weight: bold;
+  background-color: #e0e0e0;
+  color: black;
+}
+
+.user-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.logout-button {
+  background-color: #e74c3c;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.logout-button:hover {
+  background-color: #c0392b;
+}
+/*end*/
+/*info*/
+#info {
+  width: 16%;
+  height: 90%;
+  float: left;
+  padding: 10px;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.user-avatar img {
+  width: 128px;
+  height: 128px;
+  background-color: #3498db;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.user-details {
+  flex-grow: 1;
+}
+
+.user-name {
+  font-size: 18px;
+}
+
+.user-email {
+  color: #888;
+}
+
+.user-distance {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Thêm CSS cho menu lựa chọn */
+.user-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-item {
+  padding: 10px;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.menu-item.active {
+  font-weight: bold;
+}
+/*end*/
+/*datasensor*/
+/* CSS cho phần datasensor */
+#datasensor {
+  width: 80%;
+  float: left;
+  padding: 10px;
+  display: flex;
+  /* flex-wrap: wrap;
+  justify-content: center; */
+  margin-top: 10px;
+  min-width: 300px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-container{
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;  
+}
+.filter-container {
+  /* Add your styles here */
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.sensor-data-table {
+  width: 80%;
+  border-collapse: collapse;
+}
+
+.sensor-data-table th,
+.sensor-data-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.sensor-data-table th {
+  background-color: #f2f2f2;
+}
+
+.sensor-data-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.sensor-data-table tr:hover {
+  background-color: #ddd;
+}
+/*end*/
+/* CSS cho phần phân trang */
+.pagination {
+  text-align: center; /* Căn giữa nội dung phân trang */
+  margin-top: 20px; /* Khoảng cách phía trên phân trang */
+}
+
+/* Hiển thị trang hiện tại */
+.current-page {
+  font-weight: bold;
+  margin: 0 10px; /* Khoảng cách giữa trang hiện tại và nút Previous hoặc Next */
+}

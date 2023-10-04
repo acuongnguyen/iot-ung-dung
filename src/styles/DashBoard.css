@@ -1,0 +1,134 @@
+.menu-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 100vh;
+  background-color: #f0f0f0;
+  overflow: hidden;
+  transition: width 0.3s;
+}
+
+.menu-container:hover {
+  width: 300px;
+}
+
+.menu-content {
+  width: 100%;
+  height: 100%;
+  display: none;
+  position: absolute;
+  background-color: #f0f0f0;
+}
+
+.menu-container:hover .menu-content {
+  display: block;
+}
+
+.menu-item {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+.user-info {
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+/* Mã CSS cho lựa chọn menu */
+.menu-options {
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.menu-options .menu-item {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.menu-options .menu-item:last-child {
+  border-bottom: none;
+}
+
+/*kết thúc*/
+
+/* thêm data-controls-container */
+.data-controls-container {
+  display: flex;
+  justify-content: center;
+  width: 70%;
+  margin: 0 auto;
+}
+/* kết thúc*/
+
+/* Thêm đường viền cho các phần nhiệt độ, độ ẩm và ánh sáng */
+
+.data-section {
+  display: flex;
+  margin-top: 20px;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.data-item {
+  position: relative;
+  width: 30%;
+  height: 100px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  box-shadow: 0px 1px 3px rgb(211, 209, 209);
+}
+
+.block-item {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background-color: #63bf49;
+  top: -20px;
+  border-radius: 3px;
+  box-shadow: 0px 3px 3px rgb(211, 209, 209);
+}
+.item-data {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-direction: column;
+}
+.item-data h2 {
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+.item-data p {
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+/*kết thúc*/
+.chart-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.controls-section {
+  display: flex;
+  width: 500px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/*cuối cùng*/
+.menu-container:hover .data-controls-container .data-section {
+  transform: scale(0.9);
+  transition: transform 0.3s;
+}

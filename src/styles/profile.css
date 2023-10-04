@@ -1,0 +1,195 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #fefafa;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.widgets--widget-label {
+  line-height: normal;
+}
+.container {
+  width: 100%;
+  height: 710px;
+  position: relative;
+}
+/*header*/
+#header {
+  width: 98.6%;
+  height: 7%;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  padding-left: 20px;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+#menu-icon::before {
+  content: "\2261";
+  font-size: 24px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.menu-item {
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+  padding: 10px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.menu-item:hover {
+  background-color: #f0f0f0;
+}
+
+.menu-item.active {
+  font-weight: bold;
+  background-color: #e0e0e0;
+  color: black;
+}
+
+.user-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.logout-button {
+  background-color: #e74c3c;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.logout-button:hover {
+  background-color: #c0392b;
+}
+/*end*/
+/*info*/
+#info {
+  width: 16%;
+  height: 90%;
+  float: left;
+  padding: 10px;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.user-avatar img {
+  width: 128px;
+  height: 128px;
+  background-color: #3498db;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.user-details {
+  flex-grow: 1;
+}
+
+.user-name {
+  font-size: 18px;
+}
+
+.user-email {
+  color: #888;
+}
+
+.user-distance {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Thêm CSS cho menu lựa chọn */
+.user-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-item {
+  padding: 10px;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.menu-item.active {
+  font-weight: bold;
+}
+/*end*/
+/*profile*/
+#container {
+  width: 82%;
+  /* margin-left: 264.66px; */
+  float: left;
+  margin-top: 100px;
+}
+.profile-container {
+  /* text-align: center;
+  align-items: center; */
+  max-width: 800px;
+  height: 300px;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.image {
+  text-align: center;
+  align-items: center;
+  width: 200px;
+  float: left;
+  height: 200px;
+  border-radius: 50%;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.profile-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 10px auto;
+}
+
+.profile-title {
+  font-size: 24px;
+}
+
+.profile-info {
+  list-style: none;
+  padding: 0;
+}
+
+.profile-info-item {
+  margin-bottom: 10px;
+}
+.container-profile {
+  float: left;
+  margin-left: 40px;
+  width: 500px;
+  margin-top: 30px;
+}
+/*end*/

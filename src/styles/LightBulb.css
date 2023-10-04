@@ -1,0 +1,75 @@
+@import "~@fortawesome/fontawesome-svg-core/styles.css";
+
+.light-bulb {
+  text-align: center;
+  margin: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.light-bulb button {
+  padding: 10px 20px;
+  background-color: #0074d9;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.light-bulb p {
+  margin-top: 10px;
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+}
+
+.switch-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #fff;
+  margin-right: 5px;
+  transition: margin 0.3s;
+}
+
+.switch-icon.left {
+  margin-right: 5px; /* Khi ở vị trí bên trái */
+}
+
+.switch-icon.right {
+  margin-left: 5px; /* Khi ở vị trí bên phải */
+}
+
+.switch {
+  width: 60px;
+  height: 30px;
+  background-color: #ccc;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.switch.active {
+  background-color: #0074d9;
+  color: #fff;
+}
+
+.icon {
+  font-size: 130px;
+  margin-top: 16px;
+}
+
+.icon.blue {
+  color: blue;
+}
+
+.icon.red {
+  color: red;
+}
