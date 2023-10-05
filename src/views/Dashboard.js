@@ -26,7 +26,7 @@ function Dashboard({
                   Nhiệt Độ (°C)
                 </div>
               </div>
-              <Gauge label="Nhiệt độ" percentage={currentTemperature} />
+              <Gauge label="Nhiệtđộ" percentage={currentTemperature} />
             </div>
           </div>
         </div>
@@ -36,7 +36,7 @@ function Dashboard({
               <div className="widgets--widget-label">
                 <div className="widgets--widget-limited-line">Độ Ẩm (%)</div>
               </div>
-              <Gauge label="Độ ẩm" percentage={currentHumidity} />
+              <Gauge label="Độẩm" percentage={currentHumidity} />
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@ function Dashboard({
                   Ánh Sáng (Lux)
                 </div>
               </div>
-              <Gauge label="Ánh sáng" percentage={currentLight} />
+              <Gauge label="Ánhsáng" percentage={currentLight} />
             </div>
           </div>
         </div>
