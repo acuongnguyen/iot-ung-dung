@@ -1,74 +1,10 @@
 import React from "react";
 import "../styles/style.css";
 
-function Gauge({ label, percentage, currentTemperature }) {
+function Gauge({ label, percentage }) {
   const circumference = 2 * Math.PI * 30;
   const dashOffset = circumference * (1 - percentage / 100);
-
-  const getGradientColor = (value, type) => {
-    if (type === "Nhiệt độ") {
-      if (value < 10) {
-        // Dưới 10 độ C, màu trắng đến xanh
-        const blueValue = value * 25.5; // Tính giá trị màu xanh
-        return `rgb(255, 255, ${blueValue})`;
-      } else if (value >= 10 && value < 20) {
-        // Từ 10 độ C đến 20 độ C, chuyển từ xanh đến xanh lá cây
-        const greenValue = (value - 10) * 22.5; // Tính giá trị màu xanh lá cây
-        const blueValue = 255 - (value - 10) * 22.5; // Tính giá trị màu xanh
-        return `rgb(0, ${greenValue}, ${blueValue})`;
-      } else if (value >= 20 && value < 30) {
-        // Từ 20 độ C đến 30 độ C, chuyển từ xanh lá cây đến vàng
-        const redValue = (value - 20) * 12.75; // Tính giá trị màu đỏ
-        return `rgb(${redValue}, 255, 0)`;
-      } else if (value >= 30 && value <= 38) {
-        // Từ 30 độ C đến 38 độ C, chuyển từ vàng sang cam
-        const greenValue = 255 - (value - 30) * 12.75; // Tính giá trị màu xanh lá cây
-        return `rgb(255, ${greenValue}, 0)`;
-      } else if (value >= 38 && value < 45) {
-        // Từ 38 độ C đến 45 độ C, chuyển từ cam sang đỏ
-        const redValue = 255 - (value - 38) * 12.75; // Tính giá trị màu đỏ
-        return `rgb(${redValue}, 0, 0)`;
-      } else if (value >= 45) {
-        // Trên 45 độ C, màu đỏ
-        return "red";
-      } else {
-        // Mặc định
-        return "rgba(225, 50, 50, 0.867)";
-      }
-    } else if (type === "Độ ẩm") {
-      if (value < 55) {
-        // Dưới 55%, màu vàng
-        return "yellow";
-      } else if (value >= 55 && value < 65) {
-        // Từ 55% đến 65%, chuyển từ màu vàng sang xanh lá
-        const greenValue = (value - 55) * 25.5; // Tính giá trị màu xanh lá cây
-        return `rgb(255, ${greenValue}, 0)`;
-      } else if (value >= 65 && value <= 75) {
-        // Từ 65% đến 75%, chuyển từ xanh lá cây sang xanh dương nhạt
-        const blueValue = (value - 65) * 25.5; // Tính giá trị màu xanh dương
-        const greenValue = 255 - (value - 65) * 25.5; // Tính giá trị màu xanh lá cây
-        return `rgb(0, ${greenValue}, ${blueValue})`;
-      } else if (value > 75 && value <= 85) {
-        // Từ 75% đến 85%, chuyển từ xanh dương nhạt sang xanh đậm
-        const greenValue = 255 - (value - 65) * 12.75;
-        const blueValue = 255 - (value - 75) * 10; // Tính giá trị màu xanh dương
-        return `rgb(0, ${greenValue}, ${blueValue})`;
-      } else if (value > 85) {
-        // Trên 85%, màu xanh đậm
-        return "rgb(5, 5, 121)";
-      }
-    } else if (type === "Ánh sáng") {
-      if (value >= 0 && value <= 100) {
-        // Tính giá trị màu từ xám đến vàng dựa trên giá trị ánh sáng từ 0 đến 100
-        const yellowValue = (value / 100) * 255; // Tính giá trị màu vàng
-        return `rgb(${yellowValue}, ${yellowValue}, 50)`;
-      }
-    }
-    return "transparent";
-  };
-
   const circleStyle = {
-    stroke: getGradientColor(percentage, label), // Sử dụng màu sắc dựa trên nhiệt độ
     strokeDasharray: "188.496px, 282.744",
     strokeDashoffset: dashOffset,
     transform: "rotate(150deg)",
@@ -91,6 +27,26 @@ function Gauge({ label, percentage, currentTemperature }) {
               viewBox="-50 -50 100 100"
               role="presentation"
             >
+              <defs>
+                <linearGradient id="temperatureGradient" x1="50%" y1="10%" x2="10%" y2="80%">
+                  <stop offset="0%" style={{ stopColor: 'blue' }} />
+                  <stop offset="50%" style={{ stopColor: 'green' }} />
+                  <stop offset="90%" style={{ stopColor: 'yellow' }} />
+                  <stop offset="100%" style={{ stopColor: 'orange' }} />
+                </linearGradient>
+              </defs>
+              <defs>
+                <linearGradient id="humidityGradient" x1="90%" y1="70%" x2="10%" y2="30%">
+                  <stop offset="0%" style={{ stopColor: 'yellow' }} />
+                  {/* <stop offset="50%" style={{ stopColor: 'green' }} /> */}
+                  <stop offset="100%" style={{ stopColor: 'blue' }} />
+                </linearGradient>
+                <linearGradient id="lightGradient" x1="70%" y1="0%" x2="-30%" y2="0%">
+                  <stop offset="0%" style={{ stopColor: '#FFFF33' }} />
+                  <stop offset="50%" style={{ stopColor: '#FF9933' }} />
+                  <stop offset="100%" style={{ stopColor: '#FF6666' }} />
+                </linearGradient>
+              </defs>
               <circle
                 className="ant-progress-circle-trail gauge-circle"
                 r="45"
@@ -111,11 +67,11 @@ function Gauge({ label, percentage, currentTemperature }) {
                 }}
               ></circle>
               <circle
-                className="ant-progress-circle-path gauge-circle-path"
+                className={`ant-progress-circle-path gauge-circle-path ${label}-gradient `}
                 r="45"
                 cx="0"
                 cy="0"
-                stroke="#03030a1a"
+                // stroke="#03030a1a"
                 strokeLinecap="round"
                 strokeWidth="10"
                 style={{

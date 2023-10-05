@@ -314,7 +314,16 @@ body {
   background-color: #e0e0e0;
   transition: background-color 0.3s ease;
 }
-
+.Nhiệtđộ-gradient {
+  stroke: url(#temperatureGradient);
+}
+.Độẩm-gradient{
+  stroke: url(#humidityGradient);
+}
+.Ánhsáng-gradient{
+  stroke: url(#lightGradient);
+}
+/*end*/
 /*chart*/
 #chart {
   width: 54.6%;
