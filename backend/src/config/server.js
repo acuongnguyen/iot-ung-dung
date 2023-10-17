@@ -13,7 +13,6 @@ const port = process.env.PORT || 3002;
 const server = http.createServer(app);
 const io = new SocketIoServer(server);
 
-// Middleware để phân tích dữ liệu JSON từ các yêu cầu POST
 app.use(bodyParser.json());
 app.use(
   cors({
@@ -61,6 +60,7 @@ app.get("/mqtt-data-db", (req, res) => {
           temperature: result[0].temperature,
           humidity: result[0].humidity,
           light: result[0].lux,
+          dust: result[0].dust,
         };
         res.json(mqttData);
       } else {
@@ -73,7 +73,7 @@ app.get("/mqtt-data-db", (req, res) => {
 //api lấy đữ liệu từ database hiển thị datasensor
 app.get('/mqtt-data', (req, res) => {
   const { startDate, endDate } = req.query;
-  let sql = "SELECT * FROM sensor ORDER BY date DESC LIMIT 1000";
+  let sql = "SELECT * FROM sensor ORDER BY date DESC LIMIT 10000";
   
   if (startDate && endDate) {
     sql = `
@@ -118,7 +118,7 @@ app.get('/mqtt-data', (req, res) => {
 //api lấy dữ liệu từ database hiển thị activity history
 app.get('/led-data', (req, res) => {
   const { startDate, endDate } = req.query;
-  let sql = "SELECT * FROM action ORDER BY timestamp DESC LIMIT 100";
+  let sql = "SELECT * FROM action ORDER BY timestamp DESC LIMIT 10000";
   if (startDate && endDate) {
     sql = `
     SELECT * FROM action WHERE timestamp >= ? AND timestamp <= ? ORDER BY timestamp  DESC LIMIT 1000

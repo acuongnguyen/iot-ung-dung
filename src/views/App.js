@@ -13,13 +13,14 @@ import { setupSocketListeners } from "../services/Socket";
 import Dashboard from "./Dashboard";
 import Profile from "./Profile";
 import DataSensor from "./DataSensor";
-import ActivityHistory from "./ActivityHistory";
+import ActivityHistory from "./ActivityHistory"; 
 
 function App() {
   // khai báo state cho nhiệt độ, độ ẩm và ánh sáng
   const [currentTemperature, setCurrentTemperature] = useState(0);
   const [currentHumidity, setCurrentHumidity] = useState(0);
   const [currentLight, setCurrentLight] = useState(0);
+  const [currentDust, setCurrentDust] = useState(0);
 
   const [led1On, setLed1On] = useState(false);
   const [led2On, setLed2On] = useState(false);
@@ -88,10 +89,12 @@ function App() {
                   currentTemperature={currentTemperature}
                   currentHumidity={currentHumidity}
                   currentLight={currentLight}
-                  updateData={(newTemperature, newHumidity, newLight) => {
+                  currentDust={currentDust}
+                  updateData={(newTemperature, newHumidity, newLight, newDust) => {
                     setCurrentTemperature(newTemperature);
                     setCurrentHumidity(newHumidity);
                     setCurrentLight(newLight);
+                    setCurrentDust(newDust);
                   }}
                   led1On={led1On}
                   toggleLed1={toggleLed1}

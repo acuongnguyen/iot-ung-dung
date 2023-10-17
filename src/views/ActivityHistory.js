@@ -20,13 +20,8 @@ class ActivityHistory extends React.Component {
 
   componentDidMount() {
     this.fetchSensorData();
-    // this.interval = setInterval(this.fetchSensorData, 3000);
   }
-
-  // componentWillUnmount() {
-  //   clearInterval(this.interval);
-  // }
-
+  
   handleStartDateChange = (e) => {
     this.setState({ startDate: e.target.value }, () => {
       console.log("startDate: ", this.state.startDate);
@@ -199,7 +194,7 @@ class ActivityHistory extends React.Component {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Sensor Name</th>
+                <th>Device</th>
                 <th>State</th>
                 <th>Date</th>
               </tr>

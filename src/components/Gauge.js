@@ -28,23 +28,28 @@ function Gauge({ label, percentage }) {
               role="presentation"
             >
               <defs>
-                <linearGradient id="temperatureGradient" x1="50%" y1="10%" x2="10%" y2="80%">
-                  <stop offset="0%" style={{ stopColor: 'blue' }} />
-                  <stop offset="50%" style={{ stopColor: 'green' }} />
-                  <stop offset="90%" style={{ stopColor: 'yellow' }} />
-                  <stop offset="100%" style={{ stopColor: 'orange' }} />
+                <linearGradient id="temperatureGradient" x1="40%" y1="30%" x2="10%" y2="80%">
+                  <stop offset="0%" style={{ stopColor: '#DADADA' }} />
+                  <stop offset="50%" style={{ stopColor: '#DC7F7F' }} />
+                  {/* <stop offset="90%" style={{ stopColor: 'yellow' }} /> */}
+                  <stop offset="100%" style={{ stopColor: 'red' }} />
                 </linearGradient>
               </defs>
               <defs>
                 <linearGradient id="humidityGradient" x1="90%" y1="70%" x2="10%" y2="30%">
-                  <stop offset="0%" style={{ stopColor: 'yellow' }} />
+                  <stop offset="0%" style={{ stopColor: '#8F7FDC' }} />
                   {/* <stop offset="50%" style={{ stopColor: 'green' }} /> */}
                   <stop offset="100%" style={{ stopColor: 'blue' }} />
                 </linearGradient>
                 <linearGradient id="lightGradient" x1="70%" y1="0%" x2="-30%" y2="0%">
-                  <stop offset="0%" style={{ stopColor: '#FFFF33' }} />
-                  <stop offset="50%" style={{ stopColor: '#FF9933' }} />
-                  <stop offset="100%" style={{ stopColor: '#FF6666' }} />
+                  <stop offset="0%" style={{ stopColor: '#D6DC7F' }} />
+                  {/* <stop offset="50%" style={{ stopColor: '#FF9933' }} /> */}
+                  <stop offset="100%" style={{ stopColor: '#FFF700' }} />
+                </linearGradient>
+                <linearGradient id="dustGradient" x1="70%" y1="0%" x2="-30%" y2="0%">
+                  <stop offset="0%" style={{ stopColor: '#D8D8D8' }} />
+                  {/* <stop offset="50%" style={{ stopColor: 'red' }} /> */}
+                  <stop offset="100%" style={{ stopColor: 'black' }} />
                 </linearGradient>
               </defs>
               <circle
