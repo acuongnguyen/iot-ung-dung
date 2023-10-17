@@ -1,5 +1,8 @@
+const { Server: SocketIoServer } = require("socket.io");
 const { connect: MqttClient } = require("mqtt");
-// Tạo kết nối tới MQTT Broker sử dụng Paho MQTT
+const http = require("http");
+const server = http.createServer();
+const io = new SocketIoServer(server);
 const mqttClient = MqttClient("ws://172.20.10.11:9001");
 const database = require("./database");
 
@@ -20,10 +23,10 @@ function updateLedStateInDatabase(topic, action) {
 }
   
 //hàm thêm mới dữ liệu cảm biến vào db
-function insertDataSSInDatabase(temperature, humidity, light) {
+function insertDataSSInDatabase(temperature, humidity, light, dust) {
   const sql =
-    "INSERT INTO sensor (idss, date, temperature, humidity, lux) VALUES (?, NOW(), ?, ?, ?)";
-    const values = ["DHT11", temperature, humidity, light];
+    "INSERT INTO sensor (idss, date, temperature, humidity, lux, dust) VALUES (?, NOW(), ?, ?, ?, ?)";
+    const values = ["DHT11", temperature, humidity, light, dust];
   
     database.query(sql, values, (err, result) => {
     if (err) {
@@ -41,48 +44,71 @@ mqttClient.on("connect", () => {
   mqttClient.subscribe("temperature");
   mqttClient.subscribe("humidity");
   mqttClient.subscribe("light");
+  mqttClient.subscribe("dust");
 });
 
 mqttClient.on("error", (err) => {
-    console.error("MQTT Error:", err);
-  });
-  
+  console.error("MQTT Error:", err);
+});
+
 let dataMqtt = {
     temperature: null,
     humidity: null,
     light: null,
+    dust:null,
 };
   
 mqttClient.on("message", (topic, message) => {
-    if (topic === "temperature") {
-      console.log(`${topic}: ${message.toString()}`);
-      dataMqtt.temperature = message.toString();
-    } else if (topic === "humidity") {
-      console.log(`${topic}: ${message.toString()}`);
-      dataMqtt.humidity = message.toString();
-    } else if (topic === "light") {
-      console.log(`${topic}: ${message.toString()}`);
-      dataMqtt.light = message.toString();
+    // if (topic === "temperature") {
+    //   console.log(`${topic}: ${message.toString()}`);
+    //   dataMqtt.temperature = message.toString();
+    // } else if (topic === "humidity") {
+    //   console.log(`${topic}: ${message.toString()}`);
+    //   dataMqtt.humidity = message.toString();
+    // } else if (topic === "light") {
+    //   console.log(`${topic}: ${message.toString()}`);
+    //   dataMqtt.light = message.toString();
+    // } else if (topic === "dust") {
+    //   console.log(`${topic}: ${message.toString()}`);
+    //   dataMqtt.dust = message.toString();
+    if (topic === "temperature" || topic === "humidity" || topic === "light" || topic === "dust") {
+      const payload = message.toString();
+      io.emit("mqttData123", { topic, payload });
+      if (topic === "temperature") {
+        console.log(`${topic}: ${message.toString()}`);
+        dataMqtt.temperature = message.toString();
+      } else if (topic === "humidity") {
+        console.log(`${topic}: ${message.toString()}`);
+        dataMqtt.humidity = message.toString();
+      } else if (topic === "light") {
+        console.log(`${topic}: ${message.toString()}`);
+        dataMqtt.light = message.toString();
+      } else if (topic === "dust") {
+        console.log(`${topic}: ${message.toString()}`);
+        dataMqtt.dust = message.toString();
+      }
     } else if (topic === "led1" || topic === "led2") {
       console.log(`${topic}: ${message.toString()}`);
       const ledState = message.toString();
-      // io.emit("mqttData", { topic, ledState });
       updateLedStateInDatabase(topic, ledState);
     }
     if (
       dataMqtt.temperature !== null &&
       dataMqtt.humidity !== null &&
-      dataMqtt.light !== null
+      dataMqtt.light !== null &&
+      dataMqtt.dust !== null
     ) {
       // lưu
       insertDataSSInDatabase(
         dataMqtt.temperature,
         dataMqtt.humidity,
-        dataMqtt.light
+        dataMqtt.light,
+        dataMqtt.dust
       );
       dataMqtt.temperature = null;
       dataMqtt.humidity = null;
       dataMqtt.light = null;
+      dataMqtt.dust = null;
     }
 });
 module.exports =  mqttClient ;

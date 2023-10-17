@@ -204,3 +204,7 @@ body {
   font-weight: bold;
   margin: 0 10px; /* Khoảng cách giữa trang hiện tại và nút Previous hoặc Next */
 }
+.sort-buttons{
+  display: flex;
+  justify-content: center;
+}

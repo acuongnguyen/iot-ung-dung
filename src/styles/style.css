@@ -146,8 +146,10 @@ body {
 }
 #gauge1,
 #gauge2,
-#gauge3 {
-  width: 33.26%;
+#gauge3,
+#gauge4 
+{
+  width: 26.26%;
   min-width: 200px;
   height: 100%;
   float: left;
@@ -323,6 +325,9 @@ body {
 .Ánhsáng-gradient{
   stroke: url(#lightGradient);
 }
+.Độbụi-gradient{
+  stroke: url(#dustGradient);
+}
 /*end*/
 /*chart*/
 #chart {
@@ -332,14 +337,12 @@ body {
   border-bottom: 1px solid #ccc;
   float: left;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
 }
 #chartComponent {
   margin-top: 30px;
-  margin-left: -30px;
-  /* width: 83%;
-  height: 96%; */
+  margin-left: 0px;
 }
 /*end*/
 /*led*/

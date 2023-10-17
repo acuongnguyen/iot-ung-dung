@@ -12,21 +12,20 @@ class DataSensor extends React.Component {
       itemsPerPage: 10,
       startDate: "",
       endDate: "",
+      searchHour: "",
+      searchMinute: "",
+      searchSecond: "",
       filterTemperature: "",
       filterHumidity: "",
       filterLight: "",
       sortOrder: "asc",
+      sortCriteria: "date",
     };
   }
 
   componentDidMount() {
     this.fetchSensorData();
-    // this.interval = setInterval(this.fetchSensorData, 5000);
   }
-
-  // componentWillUnmount() {
-  //   clearInterval(this.interval);
-  // }
 
   handleStartDateChange = (e) => {
     this.setState({ startDate: e.target.value }, () => {
@@ -78,8 +77,11 @@ class DataSensor extends React.Component {
       filterTemperature,
       filterHumidity,
       filterLight,
+      searchHour,
+      searchMinute,
+      searchSecond,
     } = this.state;
-
+  
     let filteredData = sensorData;
     if (startDate && endDate) {
       filteredData = sensorData.filter((item) => {
@@ -89,33 +91,39 @@ class DataSensor extends React.Component {
         );
       });
     }
-
+  
     if (filterTemperature) {
-      const [minTemp, maxTemp] = filterTemperature.split("-");
       filteredData = filteredData.filter((item) => {
-        const temperature = parseFloat(item.temperature);
-        return temperature > parseFloat(minTemp) && temperature <= parseFloat(maxTemp);
+        return parseFloat(item.temperature) === parseFloat(filterTemperature);
       });
     }
-
+  
     if (filterHumidity) {
-      const [minHumidity, maxHumidity] = filterHumidity.split("-");
       filteredData = filteredData.filter((item) => {
-        const humidity = parseFloat(item.humidity);
-        return humidity > parseFloat(minHumidity) && humidity <= parseFloat(maxHumidity);
+        return parseFloat(item.humidity) === parseFloat(filterHumidity);
       });
     }
   
     if (filterLight) {
-      const [minLight, maxLight] = filterLight.split("-");
       filteredData = filteredData.filter((item) => {
-        const light = parseFloat(item.light);
-        return light > parseFloat(minLight) && light <= parseFloat(maxLight);
+        return parseFloat(item.light) === parseFloat(filterLight);
       });
     }
 
+    if (searchHour || searchMinute || searchSecond) {
+      filteredData = filteredData.filter((item) => {
+        const itemDate = new Date(item.date);
+        return (
+          (!searchHour || itemDate.getHours() === parseInt(searchHour, 10)) &&
+          (!searchMinute || itemDate.getMinutes() === parseInt(searchMinute, 10)) &&
+          (!searchSecond || itemDate.getSeconds() === parseInt(searchSecond, 10))
+        );
+      });
+    }
+  
     this.setState({ filteredData, currentPage: 1 });
   };
+  
 
   handleFilter = () => {
     this.setState({ sortOrder: "asc" }, () => {
@@ -127,26 +135,44 @@ class DataSensor extends React.Component {
     clearInterval(this.interval);
     this.fetchSensorData();
   };
-  sortData = () => {
-    const { sortOrder, filteredData } = this.state;
+  sortData = (criteria) => {
+    const { sortOrder, filteredData, sortCriteria } = this.state;
     const sortedData = [...filteredData];
-
+  
     sortedData.sort((a, b) => {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-
+      let compareA, compareB;
+  
+      switch (criteria) {
+        case "temperature":
+          compareA = parseFloat(a.temperature);
+          compareB = parseFloat(b.temperature);
+          break;
+        case "humidity":
+          compareA = parseFloat(a.humidity);
+          compareB = parseFloat(b.humidity);
+          break;
+        case "light":
+          compareA = parseFloat(a.light);
+          compareB = parseFloat(b.light);
+          break;
+        default:
+          compareA = new Date(a.date);
+          compareB = new Date(b.date);
+      }
+  
       if (sortOrder === "asc") {
-        return dateA - dateB;
+        return compareA - compareB;
       } else {
-        return dateB - dateA;
+        return compareB - compareA;
       }
     });
-
+  
     this.setState((prevState) => ({
       filteredData: sortedData,
       sortOrder: prevState.sortOrder === "asc" ? "desc" : "asc",
+      sortCriteria: criteria,
     }));
-  };
+  };  
 
   render() {
     const {
@@ -171,6 +197,40 @@ class DataSensor extends React.Component {
       <div>
         <div id="datasensor">
           <div className="search-container">
+            <label htmlFor="searchHour"> Hour (0-23): </label>
+            <input
+              type="number"
+              id="searchHour"
+              name="searchHour"
+              min="0"
+              max="23"
+              onChange={(e) => this.setState({ searchHour: e.target.value })}
+              value={this.state.searchHour}
+            />
+
+            <label htmlFor="searchMinute"> Minute (0-59): </label>
+            <input
+              type="number"
+              id="searchMinute"
+              name="searchMinute"
+              min="0"
+              max="59"
+              onChange={(e) => this.setState({ searchMinute: e.target.value })}
+              value={this.state.searchMinute}
+            />
+
+            <label htmlFor="searchSecond"> Second (0-59): </label>
+            <input
+              type="number"
+              id="searchSecond"
+              name="searchSecond"
+              min="0"
+              max="59"
+              onChange={(e) => this.setState({ searchSecond: e.target.value })}
+              value={this.state.searchSecond}
+            />
+
+            <button onClick={this.handleFilter}>Search by Time</button>
             <label htmlFor="startDate"> Start Date: </label>
             <input
               type="date"
@@ -190,56 +250,60 @@ class DataSensor extends React.Component {
             <button onClick={this.handleDateSearch}>Search</button>
           </div>
           <div className="filter-container">
-            <label htmlFor="filterTemperature"> Temperature: </label>
-            <select
+            <label htmlFor="filterTemperature"> Temperature (°C): </label>
+            <input
+              type="number"
               id="filterTemperature"
               name="filterTemperature"
               onChange={this.handleFilterTemperatureChange}
               value={filterTemperature}
-            >
-              <option value="">-- Select Temperature Range --</option>
-              <option value="10-20">10°C - 20°C</option>
-              <option value="20-30">20°C - 30°C</option>
-              <option value="30-40">30°C - 40°C</option>
-            </select>
-            <label htmlFor="filterHumidity"> Humidity: </label>
-            <select
+            />
+            <label htmlFor="filterHumidity"> Humidity (%): </label>
+            <input
+              type="number"
               id="filterHumidity"
               name="filterHumidity"
               onChange={this.handleFilterHumidityChange}
               value={filterHumidity}
-            >
-              <option value="">-- Select Humidity Range --</option>
-              <option value="60-70">60% - 70%</option>
-              <option value="70-80">70% - 80%</option>
-              <option value="80-90">80% - 90%</option>
-            </select>
-            <label htmlFor="filterLight"> Light: </label>
-            <select
+            />
+            <label htmlFor="filterLight"> Light (Lux): </label>
+            <input
+              type="number"
               id="filterLight"
               name="filterLight"
               onChange={this.handleFilterLightChange}
               value={filterLight}
-            >
-              <option value="">-- Select Light Range --</option>
-              <option value="0-30">0 Lux - 30 Lux</option>
-              <option value="30-70">30 Lux - 70 Lux</option>
-              <option value="70-100">70 Lux - 100 Lux</option>
-            </select>
+            />
             <button onClick={this.handleFilter}>Filter</button>
-            <button onClick={this.sortData}>
+            <div className="sort-buttons">
+              <button onClick={() => this.sortData("temperature")}>
+                Sort by Temperature
+              </button>
+              <button onClick={() => this.sortData("humidity")}>
+                Sort by Humidity
+              </button>
+              <button onClick={() => this.sortData("light")}>
+                Sort by Light
+              </button>
+              <button onClick={() => this.sortData("date")}>
+                Sort by Date
+              </button>
+            </div>
+
+            {/* <button onClick={this.sortData}>
               Sort({sortOrder === "asc" ? "Ascending" : "Descending"})
-            </button>
+            </button> */}
           </div>
+
           <table className="sensor-data-table">
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Sensor Name</th>
-                <th>Date</th>
                 <th>Temperature</th>
                 <th>Humidity</th>
                 <th>Light</th>
+                <th>Date</th>
               </tr>
             </thead>
             <tbody>
@@ -247,10 +311,10 @@ class DataSensor extends React.Component {
                 <tr key={index}>
                   <td>{item.id}</td>
                   <td>{item.idss}</td>
-                  <td>{item.date}</td>
                   <td>{item.temperature}°C</td>
                   <td>{item.humidity}%</td>
                   <td>{item.light} Lux</td>
+                  <td>{item.date}</td>
                 </tr>
               ))}
             </tbody>
