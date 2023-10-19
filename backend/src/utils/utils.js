@@ -18,5 +18,5 @@ function formatTimestamp(timestamp) {
     return formattedDate;
   }
   
-  module.exports = { formatTimestamp };
+module.exports = { formatTimestamp };
   
