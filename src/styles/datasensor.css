@@ -196,7 +196,7 @@ body {
 /* CSS cho phần phân trang */
 .pagination {
   text-align: center; /* Căn giữa nội dung phân trang */
-  margin-top: 20px; /* Khoảng cách phía trên phân trang */
+  margin-top: 0px; /* Khoảng cách phía trên phân trang */
 }
 
 /* Hiển thị trang hiện tại */
@@ -207,4 +207,5 @@ body {
 .sort-buttons{
   display: flex;
   justify-content: center;
+  margin-top: 1px;
 }

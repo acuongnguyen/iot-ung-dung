@@ -70,50 +70,86 @@ app.get("/mqtt-data-db", (req, res) => {
   });
 });
   
-//api lấy đữ liệu từ database hiển thị datasensor
+// //api lấy đữ liệu từ database hiển thị datasensor
 app.get('/mqtt-data', (req, res) => {
-  const { startDate, endDate } = req.query;
-  let sql = "SELECT * FROM sensor ORDER BY date DESC LIMIT 10000";
-  
-  if (startDate && endDate) {
-    sql = `
-    SELECT * FROM sensor WHERE date >= ? AND date <= ? ORDER BY date DESC LIMIT 1000
-  `;
-    database.query(sql, [startDate, endDate], (err, result) => {
-      if (err) {
-        console.error("Lỗi truy vấn DATA SENSOR MQTT:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-      } else {
-        const mqttData = result.map((row) => ({
-          id: row.id,
-          idss: row.idss,
-          date: formatTimestamp(row.date),
-          temperature: row.temperature,
-          humidity: row.humidity,
-          light: row.lux,
-        }));
-        res.json(mqttData);
-      }
-    });
-  } else {
-    database.query(sql, (err, result) => {
-      if (err) {
-        console.error("Lỗi truy vấn DATA SENSOR MQTT:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-      } else {
-        const mqttData = result.map((row) => ({
-          id: row.id,
-          idss: row.idss,
-          date: formatTimestamp(row.date),
-          temperature: row.temperature,
-          humidity: row.humidity,
-          light: row.lux,
-        }));
-        res.json(mqttData);
-      }
-    });
+  const { startDate, endDate, lastItemIndex, itemsPerPage, searchHour, searchMinute, searchSecond, searchTemperature, searchHumidity, searchLight } = req.query;
+  const parsedLastItemIndex = parseInt(lastItemIndex, 10);
+  const parsedItemsPerPage = parseInt(itemsPerPage, 10);
+  const offset = parsedLastItemIndex;
+  console.log("parsedLastItemIndex", parsedLastItemIndex, " itemsPerPage", parsedItemsPerPage);
+  if (
+    isNaN(parsedLastItemIndex) ||
+    isNaN(parsedItemsPerPage) ||
+    parsedLastItemIndex < 0 ||
+    parsedItemsPerPage <= 0
+  ) {
+    res.status(400).json({ error: 'Invalid lastItemIndex or itemsPerPage' });
+    return;
   }
+
+  let sql;
+  const params = [];
+  const values = [parsedItemsPerPage, offset];
+
+  if (startDate && endDate) {
+    sql = 'SELECT * FROM sensor WHERE date >= ? AND date <= ?';
+    params.push(startDate, endDate);
+  } else {
+    sql = 'SELECT * FROM sensor WHERE 1=1';
+  }
+
+  if (searchHour) {
+    sql += ' AND HOUR(date) = ?'; 
+    params.push(parseInt(searchHour, 10));
+  }
+
+  if (searchMinute) {
+    sql += ' AND MINUTE(date) = ?'; 
+    params.push(parseInt(searchMinute, 10));
+  }
+
+  if (searchSecond) {
+    sql += ' AND SECOND(date) = ?'; 
+    params.push(parseInt(searchSecond, 10));
+  }
+
+  if (searchTemperature) {
+    sql += ' AND temperature = ?';
+    params.push(parseFloat(searchTemperature));
+  }
+  
+  if (searchHumidity) {
+    sql += ' AND humidity = ?';
+    params.push(parseFloat(searchHumidity));
+  }
+  
+  if (searchLight) {
+    sql += ' AND lux = ?';
+    params.push(parseFloat(searchLight)); 
+  }
+  
+  sql += ' ORDER BY date DESC LIMIT ? OFFSET ?';
+
+  params.push(parsedItemsPerPage, offset);
+
+  database.query(sql, params, (err, result) => {
+    if (err) {
+      console.error('Error querying MQTT SENSOR data:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      const mqttData = result.map((row) => ({
+        id: row.id,
+        idss: row.idss,
+        date: formatTimestamp(row.date),
+        temperature: row.temperature,
+        humidity: row.humidity,
+        light: row.lux,
+      }));
+      res.json(mqttData);
+    }
+  });
 });
+
 
 //api lấy dữ liệu từ database hiển thị activity history
 app.get('/led-data', (req, res) => {

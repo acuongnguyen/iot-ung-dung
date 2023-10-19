@@ -19,9 +19,10 @@ export async function getMqttDataFromBackend() {
   }
 }
 
-export async function getSSDataFromBackend(startDate, endDate) {
+export async function getSSDataFromBackend(startDate, endDate, itemsPerPage, lastItemIndex, searchHour, searchMinute, searchSecond, searchTemperature, searchHumidity, searchLight) {
   try {
-    const queryParams = {};
+    const queryParams = { itemsPerPage, lastItemIndex, searchHour, searchMinute, searchSecond, searchTemperature, searchHumidity, searchLight };
+    console.log("lastItemIndex: ", lastItemIndex, " ItemsPerPage: ",itemsPerPage)
     if (startDate && endDate) {
       queryParams.startDate = startDate;
       queryParams.endDate = endDate;
