@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://172.20.10.7:3002",
+
+  baseURL: "http://172.16.10.81:3002",
+
 });
 
 export const controlLed = (topic, action) => {

@@ -1,8 +1,8 @@
 import { Client as MqttClient } from "paho-mqtt";
 import io from "socket.io-client";
-const socket = io("http://172.20.10.7:3002", {
+const socket = io("http://172.16.10.81:3002", {
   cors: {
-    origin: "http://172.20.10.7:3000",
+    origin: "http://172.16.10.81:3000",
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -11,10 +11,11 @@ const socket = io("http://172.20.10.7:3002", {
 let mqttClient;
 
 if (typeof window !== "undefined") {
-  mqttClient = new MqttClient("172.20.10.7", 9001, "", "");
+
+  mqttClient = new MqttClient("172.16.10.81", 9001, "", "");
 } else {
   const mqtt = require("mqtt");
-  mqttClient = mqtt.connect("mqtt://172.20.10.7:1883");
+  mqttClient = mqtt.connect("mqtt://172.16.10.81:1883");
 }
 
 mqttClient.onConnectionLost = (responseObject) => {
