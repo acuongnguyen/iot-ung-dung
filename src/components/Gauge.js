@@ -46,11 +46,6 @@ function Gauge({ label, percentage }) {
                   {/* <stop offset="50%" style={{ stopColor: '#FF9933' }} /> */}
                   <stop offset="100%" style={{ stopColor: '#FFF700' }} />
                 </linearGradient>
-                <linearGradient id="dustGradient" x1="70%" y1="0%" x2="-30%" y2="0%">
-                  <stop offset="0%" style={{ stopColor: '#D8D8D8' }} />
-                  {/* <stop offset="50%" style={{ stopColor: 'red' }} /> */}
-                  <stop offset="100%" style={{ stopColor: 'black' }} />
-                </linearGradient>
               </defs>
               <circle
                 className="ant-progress-circle-trail gauge-circle"

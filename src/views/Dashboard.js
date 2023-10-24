@@ -10,7 +10,6 @@ function Dashboard({
   currentTemperature,
   currentHumidity,
   currentLight,
-  currentDust,
   updateData,
   led1On,
   toggleLed1,
@@ -20,18 +19,6 @@ function Dashboard({
   return (
     <div>
       <div id="gauge">
-      <div id="gauge4">
-          <div id="WEB_GAUGE2" className="widgets--widget">
-            <div className="widgets--widget-limited-line gauge-widget">
-              <div className="widgets--widget-label">
-                <div className="widgets--widget-limited-line">
-                  Độ Bụi
-                </div>
-              </div>
-              <Gauge label="Độbụi" percentage={currentDust} />
-            </div>
-          </div>
-        </div>
         <div id="gauge1">
           <div id="WEB_GAUGE2" className="widgets--widget">
             <div className="widgets--widget-limited-line gauge-widget">
@@ -66,24 +53,12 @@ function Dashboard({
             </div>
           </div>
         </div>
-        
+
       </div>
       <div id="chart">
         {/* <ChartComponent updateData={updateData} />
         <ChartComponent updateData={updateData} /> */}
-        <ChartComponent 
-          updateData={updateData}
-          lines={[
-            {
-              type: "monotone",
-              dataKey: "dust",
-              name: "Độ bụi",
-              stroke: "rgba(255, 99, 132, 1)",
-              fill: "rgba(255, 99, 132, 0.2)"
-            }
-          ]}
-        />
-        <ChartComponent 
+        <ChartComponent
           updateData={updateData}
           lines={[
             {
@@ -108,9 +83,9 @@ function Dashboard({
               fill: "rgba(255, 249, 222, 1)"
             }
           ]}
-          />
+        />
       </div>
-      
+
       <div id="led1">
         <LightBulb
           hue="xanh"
