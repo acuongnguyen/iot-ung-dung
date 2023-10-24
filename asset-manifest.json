@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/iot-ung-dung/static/css/main.ed63e9c0.css",
+    "main.js": "/iot-ung-dung/static/js/main.d8b17c51.js",
+    "static/js/787.fade2e9e.chunk.js": "/iot-ung-dung/static/js/787.fade2e9e.chunk.js",
+    "static/media/avt.jpg": "/iot-ung-dung/static/media/avt.32ef1fe44d0d8c705ece.jpg",
+    "index.html": "/iot-ung-dung/index.html",
+    "main.ed63e9c0.css.map": "/iot-ung-dung/static/css/main.ed63e9c0.css.map",
+    "main.d8b17c51.js.map": "/iot-ung-dung/static/js/main.d8b17c51.js.map",
+    "787.fade2e9e.chunk.js.map": "/iot-ung-dung/static/js/787.fade2e9e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ed63e9c0.css",
+    "static/js/main.d8b17c51.js"
+  ]
+}
