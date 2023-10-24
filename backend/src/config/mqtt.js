@@ -3,7 +3,7 @@ const { connect: MqttClient } = require("mqtt");
 const http = require("http");
 const server = http.createServer();
 const io = new SocketIoServer(server);
-const mqttClient = MqttClient("ws://172.20.10.11:9001");
+const mqttClient = MqttClient("ws://172.16.10.81:9001");
 const database = require("./database");
 
 // hàm thêm mới trạng thái đèn vào db

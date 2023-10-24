@@ -16,7 +16,7 @@ const io = new SocketIoServer(server);
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "http://172.20.10.11:3000",
+    origin: "http://172.16.10.81:3000",
     methods: ["GET", "POST"],
     credentials: true,
   })

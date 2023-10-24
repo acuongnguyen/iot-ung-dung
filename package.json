@@ -14,6 +14,7 @@
     "cors": "^2.8.5",
     "eventemitter3": "^5.0.1",
     "font-awesome": "^4.7.0",
+    "gh-pages": "^6.0.0",
     "mqtt": "^5.0.5",
     "mysql": "^2.18.1",
     "paho-mqtt": "^1.1.0",
@@ -33,11 +34,14 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "homepage": "https://acuongnguyen.github.io/iot-ung-dung",
   "eslintConfig": {
     "extends": [
       "react-app",
