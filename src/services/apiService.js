@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://172.20.10.11:3002",
+  baseURL: "http://172.20.10.7:3002",
 });
 
 export const controlLed = (topic, action) => {
@@ -22,7 +22,7 @@ export async function getMqttDataFromBackend() {
 export async function getSSDataFromBackend(startDate, endDate, itemsPerPage, lastItemIndex, searchHour, searchMinute, searchSecond, searchTemperature, searchHumidity, searchLight) {
   try {
     const queryParams = { itemsPerPage, lastItemIndex, searchHour, searchMinute, searchSecond, searchTemperature, searchHumidity, searchLight };
-    console.log("lastItemIndex: ", lastItemIndex, " ItemsPerPage: ",itemsPerPage)
+    console.log("lastItemIndex: ", lastItemIndex, " ItemsPerPage: ", itemsPerPage)
     if (startDate && endDate) {
       queryParams.startDate = startDate;
       queryParams.endDate = endDate;
