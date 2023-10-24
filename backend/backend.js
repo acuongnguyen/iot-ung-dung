@@ -11,7 +11,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "http://172.20.10.11:3000",
+    origin: "http://172.20.10.7:3000",
     methods: ["GET", "POST"],
     credentials: true,
   })
@@ -22,7 +22,7 @@ const port = process.env.PORT || 3002;
 const server = http.createServer(app);
 
 // Kết nối tới MQTT Broker sử dụng Paho MQTT
-const mqttClient = MqttClient("ws://172.20.10.11:9001");
+const mqttClient = MqttClient("ws://172.20.10.7:9001");
 
 // Kết nối đến cơ sở dữ liệu MySQL
 const db = mysql.createConnection({
@@ -235,15 +235,15 @@ function formatTimestamp(timestamp) {
   )
     .toString()
     .padStart(2, "0")}-${dateObject
-    .getDate()
-    .toString()
-    .padStart(2, "0")} ${dateObject
-    .getHours()
-    .toString()
-    .padStart(2, "0")}:${dateObject
-    .getMinutes()
-    .toString()
-    .padStart(2, "0")}:${dateObject.getSeconds().toString().padStart(2, "0")}`;
+      .getDate()
+      .toString()
+      .padStart(2, "0")} ${dateObject
+        .getHours()
+        .toString()
+        .padStart(2, "0")}:${dateObject
+          .getMinutes()
+          .toString()
+          .padStart(2, "0")}:${dateObject.getSeconds().toString().padStart(2, "0")}`;
   return formattedDate;
 }
 

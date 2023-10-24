@@ -7,7 +7,7 @@ const app = express();
 const mqttClient = require("./mqtt");
 const database = require("./database");
 const router = require("../routes/routes");
-const { formatTimestamp } = require("../utils/utils"); 
+const { formatTimestamp } = require("../utils/utils");
 
 const port = process.env.PORT || 3002;
 const server = http.createServer(app);
@@ -16,7 +16,7 @@ const io = new SocketIoServer(server);
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "http://172.20.10.11:3000",
+    origin: "http://172.20.10.7:3000",
     methods: ["GET", "POST"],
     credentials: true,
   })
@@ -38,7 +38,7 @@ app.post("/led", (req, res) => {
     res.status(400).send("Error Topic");
   }
 });
-  
+
 // api để lấy dữ liệu MQTT từ cơ sở dữ liệu và trả về cho FE
 app.get("/mqtt-data-db", (req, res) => {
   const sql = "SELECT * FROM sensor ORDER BY date DESC LIMIT 1";
@@ -54,13 +54,12 @@ app.get("/mqtt-data-db", (req, res) => {
         const minutes = dateTime.getMinutes();
         const seconds = dateTime.getSeconds();
         const formattedTime = `${hours}:${minutes}:${seconds}`;
-  
+
         const mqttData = {
           time: formattedTime,
           temperature: result[0].temperature,
           humidity: result[0].humidity,
           light: result[0].lux,
-          dust: result[0].dust,
         };
         res.json(mqttData);
       } else {
@@ -69,7 +68,7 @@ app.get("/mqtt-data-db", (req, res) => {
     }
   });
 });
-  
+
 // //api lấy đữ liệu từ database hiển thị datasensor
 app.get('/mqtt-data', (req, res) => {
   const { startDate, endDate, lastItemIndex, itemsPerPage, searchHour, searchMinute, searchSecond, searchTemperature, searchHumidity, searchLight } = req.query;
@@ -99,17 +98,17 @@ app.get('/mqtt-data', (req, res) => {
   }
 
   if (searchHour) {
-    sql += ' AND HOUR(date) = ?'; 
+    sql += ' AND HOUR(date) = ?';
     params.push(parseInt(searchHour, 10));
   }
 
   if (searchMinute) {
-    sql += ' AND MINUTE(date) = ?'; 
+    sql += ' AND MINUTE(date) = ?';
     params.push(parseInt(searchMinute, 10));
   }
 
   if (searchSecond) {
-    sql += ' AND SECOND(date) = ?'; 
+    sql += ' AND SECOND(date) = ?';
     params.push(parseInt(searchSecond, 10));
   }
 
@@ -117,17 +116,17 @@ app.get('/mqtt-data', (req, res) => {
     sql += ' AND temperature = ?';
     params.push(parseFloat(searchTemperature));
   }
-  
+
   if (searchHumidity) {
     sql += ' AND humidity = ?';
     params.push(parseFloat(searchHumidity));
   }
-  
+
   if (searchLight) {
     sql += ' AND lux = ?';
-    params.push(parseFloat(searchLight)); 
+    params.push(parseFloat(searchLight));
   }
-  
+
   sql += ' ORDER BY date DESC LIMIT ? OFFSET ?';
 
   params.push(parsedItemsPerPage, offset);
@@ -173,19 +172,19 @@ app.get('/led-data', (req, res) => {
         res.json(ledData);
       }
     });
-  } else { 
+  } else {
     database.query(sql, (err, result) => {
-    if (err) {
-      console.error("Lỗi truy vấn DATA LED MQTT:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      const ledData = result.map((row) => ({
-        id: row.id,
-        idss: row.idss,
-        state: row.state,
-        date: formatTimestamp(row.timestamp),
-      }));
-      res.json(ledData);
+      if (err) {
+        console.error("Lỗi truy vấn DATA LED MQTT:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+      } else {
+        const ledData = result.map((row) => ({
+          id: row.id,
+          idss: row.idss,
+          state: row.state,
+          date: formatTimestamp(row.timestamp),
+        }));
+        res.json(ledData);
       }
     });
   }

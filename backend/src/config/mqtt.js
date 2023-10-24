@@ -3,11 +3,11 @@ const { connect: MqttClient } = require("mqtt");
 const http = require("http");
 const server = http.createServer();
 const io = new SocketIoServer(server);
-const mqttClient = MqttClient("ws://172.20.10.11:9001");
+const mqttClient = MqttClient('mqtt://172.20.10.7:1883');
 const database = require("./database");
 
 // hàm thêm mới trạng thái đèn vào db
-function updateLedStateInDatabase(topic, action) {  
+function updateLedStateInDatabase(topic, action) {
   const sql =
     "INSERT INTO action (idss, state, timestamp) VALUES (?, ?, NOW())";
   const values = [topic, action];
@@ -16,19 +16,19 @@ function updateLedStateInDatabase(topic, action) {
       console.error(`Lỗi cập nhật trạng thái đèn (${topic}):`, err);
     } else {
       console.log(
-      `Đã cập nhật trạng thái đèn (${topic}) trong cơ sở dữ liệu.`
+        `Đã cập nhật trạng thái đèn (${topic}) trong cơ sở dữ liệu.`
       );
     }
-  });    
+  });
 }
-  
+
 //hàm thêm mới dữ liệu cảm biến vào db
-function insertDataSSInDatabase(temperature, humidity, light, dust) {
+function insertDataSSInDatabase(temperature, humidity, light) {
   const sql =
-    "INSERT INTO sensor (idss, date, temperature, humidity, lux, dust) VALUES (?, NOW(), ?, ?, ?, ?)";
-    const values = ["DHT11", temperature, humidity, light, dust];
-  
-    database.query(sql, values, (err, result) => {
+    "INSERT INTO sensor (idss, date, temperature, humidity, lux) VALUES (?, NOW(), ?, ?, ?)";
+  const values = ["DHT11", temperature, humidity, light];
+
+  database.query(sql, values, (err, result) => {
     if (err) {
       console.error("Lỗi cập nhật dữ liệu MQTT vào cơ sở dữ liệu:", err);
     } else {
@@ -44,7 +44,6 @@ mqttClient.on("connect", () => {
   mqttClient.subscribe("temperature");
   mqttClient.subscribe("humidity");
   mqttClient.subscribe("light");
-  mqttClient.subscribe("dust");
 });
 
 mqttClient.on("error", (err) => {
@@ -52,63 +51,44 @@ mqttClient.on("error", (err) => {
 });
 
 let dataMqtt = {
-    temperature: null,
-    humidity: null,
-    light: null,
-    dust:null,
+  temperature: null,
+  humidity: null,
+  light: null,
 };
-  
+
 mqttClient.on("message", (topic, message) => {
-    // if (topic === "temperature") {
-    //   console.log(`${topic}: ${message.toString()}`);
-    //   dataMqtt.temperature = message.toString();
-    // } else if (topic === "humidity") {
-    //   console.log(`${topic}: ${message.toString()}`);
-    //   dataMqtt.humidity = message.toString();
-    // } else if (topic === "light") {
-    //   console.log(`${topic}: ${message.toString()}`);
-    //   dataMqtt.light = message.toString();
-    // } else if (topic === "dust") {
-    //   console.log(`${topic}: ${message.toString()}`);
-    //   dataMqtt.dust = message.toString();
-    if (topic === "temperature" || topic === "humidity" || topic === "light" || topic === "dust") {
-      const payload = message.toString();
-      io.emit("mqttData123", { topic, payload });
-      if (topic === "temperature") {
-        console.log(`${topic}: ${message.toString()}`);
-        dataMqtt.temperature = message.toString();
-      } else if (topic === "humidity") {
-        console.log(`${topic}: ${message.toString()}`);
-        dataMqtt.humidity = message.toString();
-      } else if (topic === "light") {
-        console.log(`${topic}: ${message.toString()}`);
-        dataMqtt.light = message.toString();
-      } else if (topic === "dust") {
-        console.log(`${topic}: ${message.toString()}`);
-        dataMqtt.dust = message.toString();
-      }
-    } else if (topic === "led1" || topic === "led2") {
+  if (topic === "temperature" || topic === "humidity" || topic === "light") {
+    const payload = message.toString();
+    io.emit("mqttData123", { topic, payload });
+    if (topic === "temperature") {
       console.log(`${topic}: ${message.toString()}`);
-      const ledState = message.toString();
-      updateLedStateInDatabase(topic, ledState);
+      dataMqtt.temperature = message.toString();
+    } else if (topic === "humidity") {
+      console.log(`${topic}: ${message.toString()}`);
+      dataMqtt.humidity = message.toString();
+    } else if (topic === "light") {
+      console.log(`${topic}: ${message.toString()}`);
+      dataMqtt.light = message.toString();
     }
-    if (
-      dataMqtt.temperature !== null &&
-      dataMqtt.humidity !== null &&
-      dataMqtt.light !== null &&
-      dataMqtt.dust !== null
-    ) {
-      // lưu
-      insertDataSSInDatabase(
-        dataMqtt.temperature,
-        dataMqtt.humidity,
-        dataMqtt.light,
-        dataMqtt.dust
-      );
-      dataMqtt.temperature = null;
-      dataMqtt.humidity = null;
-      dataMqtt.light = null;
-      dataMqtt.dust = null;
-    }
+  } else if (topic === "led1" || topic === "led2") {
+    console.log(`${topic}: ${message.toString()}`);
+    const ledState = message.toString();
+    updateLedStateInDatabase(topic, ledState);
+  }
+  if (
+    dataMqtt.temperature !== null &&
+    dataMqtt.humidity !== null &&
+    dataMqtt.light !== null
+  ) {
+    // lưu
+    insertDataSSInDatabase(
+      dataMqtt.temperature,
+      dataMqtt.humidity,
+      dataMqtt.light
+    );
+    dataMqtt.temperature = null;
+    dataMqtt.humidity = null;
+    dataMqtt.light = null;
+  }
 });
-module.exports =  mqttClient ;
+module.exports = mqttClient;
