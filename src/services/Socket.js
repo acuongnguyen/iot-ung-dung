@@ -11,6 +11,7 @@ const socket = io("http://172.16.10.81:3002", {
 let mqttClient;
 
 if (typeof window !== "undefined") {
+
   mqttClient = new MqttClient("172.16.10.81", 9001, "", "");
 } else {
   const mqtt = require("mqtt");
@@ -31,7 +32,6 @@ mqttClient.connect({
     mqttClient.subscribe("temperature");
     mqttClient.subscribe("humidity");
     mqttClient.subscribe("light");
-    mqttClient.subscribe("dust");
   },
   onFailure: (err) => {
     console.error("Kết nối MQTT thất bại:", err.errorMessage);
@@ -45,7 +45,7 @@ mqttClient.onMessageArrived = (message) => {
   if (topic === "led1" || topic === "led2") {
     const ledState = payload;
     console.log(`${topic.toUpperCase()} is ${ledState}`);
-  } 
+  }
 };
 
 let led1State = false;
@@ -83,21 +83,17 @@ function setupSocketListeners(callback) {
 export function sendMqttData(callback) {
   mqttClient.onMessageArrived = (message) => {
     const topic = message.destinationName;
-    if(topic === "temperature"){
+    if (topic === "temperature") {
       const value = message.payloadString;
       callback("temperature", value);
       console.log(`${topic.toUpperCase()} have value ${value}`);
-    } else if(topic === "humidity"){
+    } else if (topic === "humidity") {
       const value = message.payloadString;
       callback("humidity", value);
       console.log(`${topic.toUpperCase()} have value ${value}`);
-    } else if(topic === "light" ) {
+    } else if (topic === "light") {
       const value = message.payloadString;
       callback("light", value);
-      console.log(`${topic.toUpperCase()} have value ${value}`);
-    }else if(topic === "dust"){
-      const value = message.payloadString;
-      callback("dust", value);
       console.log(`${topic.toUpperCase()} have value ${value}`);
     }
   }
